@@ -13,7 +13,7 @@ TestProcessedFile = "dataset/testKaggle-processed.csv"
 
 UnigramSize = 15000
 VocabSize = UnigramSize
-UseBigrams = True
+UseBigrams = False
 if UseBigrams:
     BigramSize = 10000
     VocabSize = UnigramSize + BigramSize
@@ -86,7 +86,8 @@ def process_tweets(csv_file, test_file=True):
 
 def build_model():
     model = Sequential()
-    model.add(Dense(1, input_dim = VocabSize, activation = 'sigmoid'))
+    model.add(Dense(500, input_dim = VocabSize, activation = 'sigmoid'))
+    model.add(Dense(1, activation='sigmoid'))
     model.compile(loss="binary_crossentropy", optimizer='adam', metrics=['accuracy'])
     return model
 
@@ -113,7 +114,7 @@ if __name__ =='__main__':
     #     train_tweets=tweets
     del tweets
     print ('Extracting Features and Training batches')
-    nb_epochs = 20
+    nb_epochs = 5
     batch_size=500#!!!!!!!!!!!!!
     
     model = build_model()
@@ -149,5 +150,5 @@ if __name__ =='__main__':
         #utils.write_status(i, n_test_batches)
         i+=1
     predictions=[(str(j), int(predictions[j])) for j in range(len(test_tweets))]
-    utils.save_results_to_csv(predictions, 'logistic.csv')
-    print ('\nSaved to logistic.csv')
+    utils.save_results_to_csv(predictions, 'MLP.csv')
+    print ('\nSaved to MLP.csv')
